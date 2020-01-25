@@ -14,8 +14,8 @@ class SinglyLinkedListTests: XCTestCase {
     func testInitializeWithValue() {
         let subject = SinglyLinkedList(firstValue: 3)
         XCTAssert(subject.count == 1)
-        XCTAssert(subject.rootNode.data == 3)
-        XCTAssert(subject.tailNode.data == 3)
+        XCTAssert(subject.rootNode.value == 3)
+        XCTAssert(subject.tailNode.value == 3)
         XCTAssert(subject.description == "List{(3)}")
         var array = [Int]()
         subject.forEach { (item) in
@@ -26,12 +26,12 @@ class SinglyLinkedListTests: XCTestCase {
     }
 
     func testInitializeWithRootNode() {
-        var rootNode = SinglyLinkedListNode(data: 1)
+        var rootNode = SinglyLinkedListNode(value: 1)
         var subject = SinglyLinkedList(rootNode: rootNode)
         
         XCTAssert(subject.count == 1)
-        XCTAssert(subject.rootNode.data == 1)
-        XCTAssert(subject.tailNode.data == 1)
+        XCTAssert(subject.rootNode.value == 1)
+        XCTAssert(subject.tailNode.value == 1)
         XCTAssert(subject.description == "List{(1)}")
         var array = [Int]()
         subject.forEach { (item) in
@@ -40,15 +40,15 @@ class SinglyLinkedListTests: XCTestCase {
         XCTAssert(array.count == 1)
         XCTAssert(array.first == 1)
         
-        rootNode = SinglyLinkedListNode(data: 2)
+        rootNode = SinglyLinkedListNode(value: 2)
         rootNode.insert(value: 3)
         rootNode.insert(value: 4)
         rootNode.insert(value: 5)
         subject = SinglyLinkedList(rootNode: rootNode)
         
         XCTAssert(subject.count == 4)
-        XCTAssert(subject.rootNode.data == 2)
-        XCTAssert(subject.tailNode.data == 5)
+        XCTAssert(subject.rootNode.value == 2)
+        XCTAssert(subject.tailNode.value == 5)
         XCTAssert(subject.description == "List{(2)->(3)->(4)->(5)}")
         array.removeAll()
         subject.forEach { (item) in
@@ -63,8 +63,8 @@ class SinglyLinkedListTests: XCTestCase {
         let subject = SinglyLinkedList.fromArray(originalArray)
         XCTAssertNotNil(subject)
         XCTAssert(subject?.count == originalArray.count)
-        XCTAssert(subject?.rootNode.data == 1)
-        XCTAssert(subject?.tailNode.data == 8)
+        XCTAssert(subject?.rootNode.value == 1)
+        XCTAssert(subject?.tailNode.value == 8)
         var generatedArray = [Int]()
         subject?.forEach { (item) in
             generatedArray.append(item)
@@ -104,6 +104,20 @@ class SinglyLinkedListTests: XCTestCase {
         subject.trimToRoot()
         XCTAssert(subject.count == 1)
         XCTAssertNil(subject.rootNode.next)
+    }
+    
+    func testFirstAndLast() {
+        let rootNode = SinglyLinkedListNode(value: "fart")
+        let node2 = rootNode.insert(value: "toot")
+        rootNode.insert(value: "beef")
+        let subject = SinglyLinkedList(rootNode: rootNode)
+        XCTAssert(subject.firstValue == "fart")
+        XCTAssert(subject.lastValue == "beef")
+        let tootNode = subject.firstNode { (node) -> Bool in
+            node.value == "toot"
+        }
+        XCTAssertNotNil(tootNode)
+        XCTAssert(tootNode == node2)
     }
 
 }
