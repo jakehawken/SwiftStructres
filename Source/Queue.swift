@@ -35,7 +35,7 @@ public class Queue<T> {
         guard let currentList = list else {
             return nil
         }
-        list = list?.newListByIncrementingHead()
+        list = list?.newListByIncrementingRoot()
         count -= 1
         return currentList.rootNode.value
     }

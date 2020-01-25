@@ -104,7 +104,7 @@ public class SinglyLinkedList<T> {
     Returns a new linked list, but with the rootNode being the node after the current list's root node. If there is no second node, this method will return nil. Since the tail node is copied to the new list (rather than being found iteratively), this method finishes in constant time.
     - returns: An optional SinglyLinkedList. Returns nil if `rootNode` has a nil `next` property.
     */
-    func newListByIncrementingHead() -> SinglyLinkedList? {
+    func newListByIncrementingRoot() -> SinglyLinkedList? {
         guard let next = rootNode.next else {
             return nil
         }
