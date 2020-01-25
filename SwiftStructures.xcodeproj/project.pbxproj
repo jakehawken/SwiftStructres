@@ -16,6 +16,8 @@
 		0928BB4023D7EF070098FB9B /* SinglyLinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0928BB3F23D7EF070098FB9B /* SinglyLinkedList.swift */; };
 		0928BB4223D8ACE10098FB9B /* SinglyLinkedListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0928BB4123D8ACE10098FB9B /* SinglyLinkedListTests.swift */; };
 		0928BB4C23DC03400098FB9B /* InternalUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0928BB4B23DC03400098FB9B /* InternalUtilities.swift */; };
+		0928BB4E23DC0E1A0098FB9B /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0928BB4D23DC0E1A0098FB9B /* Queue.swift */; };
+		0928BB5023DC130D0098FB9B /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0928BB4F23DC130D0098FB9B /* QueueTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,8 @@
 		0928BB3F23D7EF070098FB9B /* SinglyLinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglyLinkedList.swift; sourceTree = "<group>"; };
 		0928BB4123D8ACE10098FB9B /* SinglyLinkedListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglyLinkedListTests.swift; sourceTree = "<group>"; };
 		0928BB4B23DC03400098FB9B /* InternalUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalUtilities.swift; sourceTree = "<group>"; };
+		0928BB4D23DC0E1A0098FB9B /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		0928BB4F23DC130D0098FB9B /* QueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				0928BB4123D8ACE10098FB9B /* SinglyLinkedListTests.swift */,
+				0928BB4F23DC130D0098FB9B /* QueueTests.swift */,
 				0928BB3523D7EEB40098FB9B /* Info.plist */,
 			);
 			path = SwiftStructuresTests;
@@ -108,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				0928BB3F23D7EF070098FB9B /* SinglyLinkedList.swift */,
+				0928BB4D23DC0E1A0098FB9B /* Queue.swift */,
 				0928BB4B23DC03400098FB9B /* InternalUtilities.swift */,
 			);
 			path = Source;
@@ -218,6 +224,7 @@
 				0928BB1D23D7EEB20098FB9B /* AppDelegate.swift in Sources */,
 				0928BB4023D7EF070098FB9B /* SinglyLinkedList.swift in Sources */,
 				0928BB4C23DC03400098FB9B /* InternalUtilities.swift in Sources */,
+				0928BB4E23DC0E1A0098FB9B /* Queue.swift in Sources */,
 				0928BB1F23D7EEB20098FB9B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -227,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0928BB4223D8ACE10098FB9B /* SinglyLinkedListTests.swift in Sources */,
+				0928BB5023DC130D0098FB9B /* QueueTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

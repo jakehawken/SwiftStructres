@@ -99,6 +99,23 @@ public class SinglyLinkedList<T> {
         self.rootNode = rootNode
         self.tailNode = rootNode.findTerminalNode()
     }
+    
+    /**
+    Returns a new linked list, but with the rootNode being the node after the current list's root node. If there is no second node, this method will return nil. Since the tail node is copied to the new list (rather than being found iteratively), this method finishes in constant time.
+    - returns: An optional SinglyLinkedList. Returns nil if `rootNode` has a nil `next` property.
+    */
+    func newListByIncrementingHead() -> SinglyLinkedList? {
+        guard let next = rootNode.next else {
+            return nil
+        }
+        return SinglyLinkedList(rootNode: next,
+                                tailNode: tailNode)
+    }
+    
+    private init(rootNode: SinglyLinkedListNode<T>, tailNode: SinglyLinkedListNode<T>) {
+        self.rootNode = rootNode
+        self.tailNode = tailNode
+    }
 }
 
 public extension SinglyLinkedList {
@@ -144,7 +161,7 @@ public extension SinglyLinkedList {
 
 public extension SinglyLinkedList {
     /**
-    Inserts a value onto the end of the list. Since references are maintained to the r`oot and tail of the list, insertion happens in O(1) time.
+    Inserts a value onto the end of the list. Since references are maintained to the root and tail of the list, insertion happens in constant time.
     - Parameter value: The value that will go into the new tailNode of the list.
     */
     func insert(value: T) {
@@ -172,6 +189,7 @@ public extension SinglyLinkedList {
     
     /**
     Generates an array from the contents of the list, honoring the data order. e.g. List{ (0)->(1)->(2) } will generate [0,1,2]
+    - returns: An array corresponding to the values of the list's nodes. Guaranteed to have at leats one element.
     */
     func asArray() -> [T] {
         var output = [T]()

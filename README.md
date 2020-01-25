@@ -6,9 +6,9 @@ The Swift standard library comes with a handful of data structures, including ar
 
 - Singly-linked list (have)
 - Doubly-linked list (need)
-- Heap (need)
+- Queue (have)
 - Stack (need)
-- Queue (need)
+- Heap (need)
 - Graph (need)
 - Binary search tree (need)
 
