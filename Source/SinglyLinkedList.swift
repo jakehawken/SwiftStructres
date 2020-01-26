@@ -78,8 +78,8 @@ extension SinglyLinkedListNode: CustomStringConvertible {
  The `SinglyLinkedList<T>` class exists to manage a list of nodes primarily by maintaining references to the head and tail, so that inserting to the list can be achieved in constant time. Secondarily, the list object provides convenience methods for easy management and manipulation of the list.
 */
 public class SinglyLinkedList<T> {
-    public let rootNode: SinglyLinkedListNode<T>
-    private(set) public var tailNode: SinglyLinkedListNode<T>
+    private let rootNode: SinglyLinkedListNode<T>
+    private var tailNode: SinglyLinkedListNode<T>
     
     /**
     The basic initializer for creating a new linked list. The value passed in will be the value of the root node, and will determine the generic type of the list, i.e. calling `SinglyLinkedList(firstValue: 3)` will generate a `SinglyLinkedList<Int>`.
@@ -95,7 +95,7 @@ public class SinglyLinkedList<T> {
     An initializer for creating linked lists from an existing node. Since it will have to iteratively determine the tailNode (since the root may have attached child nodes) this initialization is an O(n) operation.
     - Parameter rootNode: A preexisting node that will become the root node for this list. If it has any child nodes, the the tail will be found and set to the `tailNode` property.
     */
-    public init(rootNode: SinglyLinkedListNode<T>) {
+    fileprivate init(rootNode: SinglyLinkedListNode<T>) {
         self.rootNode = rootNode
         self.tailNode = rootNode.findTerminalNode()
     }
@@ -104,7 +104,7 @@ public class SinglyLinkedList<T> {
     Returns a new linked list, but with the rootNode being the node after the current list's root node. If there is no second node, this method will return nil. Since the tail node is copied to the new list (rather than being found iteratively), this method finishes in constant time.
     - returns: An optional SinglyLinkedList. Returns nil if `rootNode` has a nil `next` property.
     */
-    func newListByIncrementingRoot() -> SinglyLinkedList? {
+    public func newListByIncrementingRoot() -> SinglyLinkedList? {
         guard let next = rootNode.next else {
             return nil
         }
@@ -131,14 +131,14 @@ public extension SinglyLinkedList {
     /**
     Returns the value of the first node in the list.
     */
-    var firstValue: T {
+    var rootValue: T {
         return rootNode.value
     }
     
     /**
     Returns the value of the last node in the list.
     */
-    var lastValue: T {
+    var tailValue: T {
         return tailNode.value
     }
     
