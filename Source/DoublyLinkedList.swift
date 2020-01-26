@@ -33,6 +33,21 @@ public class DoublyLinkedListNode<T>: Equatable {
     }
 }
 
+extension DoublyLinkedListNode: CustomStringConvertible {
+    
+    public var description: String {
+        let nextString: String
+        if let next = next {
+            nextString = "\(next.value)"
+        }
+        else {
+            nextString = "nil"
+        }
+        return "Node{value: (\(value)), nextValue:(\(nextString))}"
+    }
+    
+}
+
 public extension DoublyLinkedListNode {
     
     func countFromHere() -> Int {
@@ -265,6 +280,24 @@ public extension DoublyLinkedList {
         var array = [T]()
         forEachFromTailToRoot(doBlock: { array.append($0) })
         return array
+    }
+    
+}
+
+extension DoublyLinkedList: CustomStringConvertible {
+    
+    public var description: String {
+        var output = "LinkedList{"
+        var currentNode: DoublyLinkedListNode? = rootNode
+        while let node = currentNode {
+            output += "(\(node.value))"
+            if node.next != nil {
+                output += "<->"
+            }
+            currentNode = node.next
+        }
+        output += "}"
+        return output
     }
     
 }

@@ -188,7 +188,7 @@ public extension SinglyLinkedList {
     }
     
     /**
-    Generates an array from the contents of the list, honoring the data order. e.g. List{ (0)->(1)->(2) } will generate [0,1,2]
+    Generates an array from the contents of the list, honoring the data order. e.g. LinkedList{ (0)->(1)->(2) } will generate [0,1,2]
     - returns: An array corresponding to the values of the list's nodes. Guaranteed to have at leats one element.
     */
     func asArray() -> [T] {
@@ -198,7 +198,7 @@ public extension SinglyLinkedList {
     }
     
     /**
-    Generates a linked list of the respective elements of an array, honoring the data order, e.g. passing in [0,1,2] will generate List{ (0)->(1)->(2) }
+    Generates a linked list of the respective elements of an array, honoring the data order, e.g. passing in [0,1,2] will generate LinkedList{ (0)->(1)->(2) }
     - Parameter array: The array which will be used to generate the list.
     - returns: An optional singly linked list. If the array is empty, this will be nil. Otherwise, it will be non-nil.
     */
@@ -219,7 +219,7 @@ public extension SinglyLinkedList {
 extension SinglyLinkedList: CustomStringConvertible {
     
     public var description: String {
-        var output = "List{"
+        var output = "LinkedList{"
         var currentNode: SinglyLinkedListNode? = rootNode
         while let node = currentNode {
             output += "(\(node.value))"

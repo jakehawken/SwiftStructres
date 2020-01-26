@@ -16,7 +16,7 @@ class SinglyLinkedListTests: XCTestCase {
         XCTAssert(subject.count == 1)
         XCTAssert(subject.rootValue == 3)
         XCTAssert(subject.tailValue == 3)
-        XCTAssert(subject.description == "List{(3)}")
+        XCTAssert(subject.description == "LinkedList{(3)}")
         var array = [Int]()
         subject.forEach { (item) in
             array.append(item)
@@ -37,7 +37,7 @@ class SinglyLinkedListTests: XCTestCase {
             generatedArray.append(item)
         }
         XCTAssert(generatedArray == originalArray)
-        XCTAssert(subject?.description == "List{(1)->(2)->(3)->(4)->(5)->(6)->(7)->(8)}")
+        XCTAssert(subject?.description == "LinkedList{(1)->(2)->(3)->(4)->(5)->(6)->(7)->(8)}")
     }
     
     func testGenerateArray() {
