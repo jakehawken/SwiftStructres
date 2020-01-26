@@ -143,15 +143,15 @@ public extension SinglyLinkedList {
     }
     
     /**
-    Finds the first node in the list which matches criteria passed in via there `where` block.
-    - Parameter where: The block into which each node in the array will be passed until the block returns `true`.
+    Finds the first value in the list which matches criteria passed in via the `where` block.
+    - Parameter where: The block into which each value in the list will be passed until the block returns `true` or the list ends.
     - returns: The first node for which the `where` block returns true. If none do, returns `nil`
     */
-    func firstNode(where whereBlock: (SinglyLinkedListNode<T>)->Bool) -> SinglyLinkedListNode<T>? {
+    func firstValue(where whereBlock: (T)->Bool) -> T? {
         var current: SinglyLinkedListNode? = rootNode
         while let currentNode = current {
-            if whereBlock(currentNode) {
-                return currentNode
+            if whereBlock(currentNode.value) {
+                return currentNode.value
             }
             current = currentNode.next
         }
@@ -161,10 +161,10 @@ public extension SinglyLinkedList {
 
 public extension SinglyLinkedList {
     /**
-    Inserts a value onto the end of the list. Since references are maintained to the root and tail of the list, insertion happens in constant time.
+    Appends a value onto the end of the list. Since references are maintained to the root and tail of the list, insertion happens in constant time.
     - Parameter value: The value that will go into the new tailNode of the list.
     */
-    func insert(value: T) {
+    func append(_ value: T) {
         let newNode = SinglyLinkedListNode(value: value)
         tailNode.next = newNode
         tailNode = newNode
@@ -206,7 +206,7 @@ public extension SinglyLinkedList {
         var list: SinglyLinkedList?
         array.forEach { (item) in
             if let list = list {
-                list.insert(value: item)
+                list.append(item)
             }
             else {
                 list = SinglyLinkedList(firstValue: item)

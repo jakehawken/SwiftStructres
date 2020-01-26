@@ -75,19 +75,19 @@ class SinglyLinkedListTests: XCTestCase {
     
     func testGenerateArray() {
         let subject = SinglyLinkedList(firstValue: 9)
-        subject.insert(value: 8)
-        subject.insert(value: 7)
-        subject.insert(value: 6)
+        subject.append(8)
+        subject.append(7)
+        subject.append(6)
         let generatedArray = subject.asArray()
         XCTAssert(generatedArray == [9,8,7,6])
     }
 
     func testForEach() {
         let subject = SinglyLinkedList(firstValue: 1)
-        subject.insert(value: 2)
-        subject.insert(value: 3)
-        subject.insert(value: 4)
-        subject.insert(value: 5)
+        subject.append(2)
+        subject.append(3)
+        subject.append(4)
+        subject.append(5)
         var array = [Int]()
         subject.forEach { (item) in
             array.append(item)
@@ -97,27 +97,31 @@ class SinglyLinkedListTests: XCTestCase {
     
     func testTrimToRoot() {
         let subject = SinglyLinkedList(firstValue: 1)
-        subject.insert(value: 2)
-        subject.insert(value: 3)
-        subject.insert(value: 4)
-        subject.insert(value: 5)
+        subject.append(2)
+        subject.append(3)
+        subject.append(4)
+        subject.append(5)
         subject.trimToRoot()
         XCTAssert(subject.count == 1)
         XCTAssertNil(subject.rootNode.next)
     }
     
     func testFirstAndLast() {
-        let rootNode = SinglyLinkedListNode(value: "fart")
-        let node2 = rootNode.insert(value: "toot")
-        rootNode.insert(value: "beef")
-        let subject = SinglyLinkedList(rootNode: rootNode)
+        let subject = SinglyLinkedList(firstValue: "fart")
+        subject.append("toot")
+        subject.append("beef")
         XCTAssert(subject.firstValue == "fart")
         XCTAssert(subject.lastValue == "beef")
-        let tootNode = subject.firstNode { (node) -> Bool in
-            node.value == "toot"
-        }
-        XCTAssertNotNil(tootNode)
-        XCTAssert(tootNode == node2)
+        let tootVal = subject.firstValue { $0 == "toot" }
+        XCTAssertNotNil(tootVal)
+        XCTAssert(subject.asArray() == ["fart","toot","beef"])
+        subject.append("fluff")
+        XCTAssert(subject.firstValue == "fart")
+        XCTAssert(subject.lastValue == "fluff")
+        let beefVal = subject.firstValue { $0 == "beef" }
+        XCTAssertNotNil(beefVal)
+        let rando = subject.firstValue { $0 == "OCTOPUS" }
+        XCTAssertNil(rando)
     }
 
 }

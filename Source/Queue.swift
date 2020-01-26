@@ -24,7 +24,7 @@ public class Queue<T> {
             self.list = SinglyLinkedList(firstValue: element)
             return
         }
-        list.insert(value: element)
+        list.append(element)
     }
     
     /**
