@@ -8,10 +8,10 @@ import Foundation
 // MARK: - SinglyLinkedListNode<T>
 
 public class SinglyLinkedListNode<T>: Equatable {
-    let value: T
-    var next: SinglyLinkedListNode<T>?
+    public let value: T
+    public var next: SinglyLinkedListNode<T>?
     
-    init(value: T) {
+    public init(value: T) {
         self.value = value
     }
     
@@ -78,14 +78,14 @@ extension SinglyLinkedListNode: CustomStringConvertible {
  The `SinglyLinkedList<T>` class exists to manage a list of nodes primarily by maintaining references to the head and tail, so that inserting to the list can be achieved in constant time. Secondarily, the list object provides convenience methods for easy management and manipulation of the list.
 */
 public class SinglyLinkedList<T> {
-    let rootNode: SinglyLinkedListNode<T>
-    private(set) var tailNode: SinglyLinkedListNode<T>
+    public let rootNode: SinglyLinkedListNode<T>
+    private(set) public var tailNode: SinglyLinkedListNode<T>
     
     /**
     The basic initializer for creating a new linked list. The value passed in will be the value of the root node, and will determine the generic type of the list, i.e. calling `SinglyLinkedList(firstValue: 3)` will generate a `SinglyLinkedList<Int>`.
     - Parameter firstValue: The value that will become set to the `value` property of the root node. At initialization, there will only be one node, so the `rootNode` and `tailNode` properties will return the same object.
     */
-    init(firstValue: T) {
+    public init(firstValue: T) {
         let first = SinglyLinkedListNode(value: firstValue)
         self.rootNode = first
         self.tailNode = first
@@ -95,7 +95,7 @@ public class SinglyLinkedList<T> {
     An initializer for creating linked lists from an existing node. Since it will have to iteratively determine the tailNode (since the root may have attached child nodes) this initialization is an O(n) operation.
     - Parameter rootNode: A preexisting node that will become the root node for this list. If it has any child nodes, the the tail will be found and set to the `tailNode` property.
     */
-    init(rootNode: SinglyLinkedListNode<T>) {
+    public init(rootNode: SinglyLinkedListNode<T>) {
         self.rootNode = rootNode
         self.tailNode = rootNode.findTerminalNode()
     }

@@ -4,7 +4,7 @@
 //  Copyright © 2020 Jake Hawken. All rights reserved.
 
 import XCTest
-@testable import SwiftStructures
+import SwiftStructures
 
 class SinglyLinkedListTests: XCTestCase {
 
