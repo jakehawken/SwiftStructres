@@ -5,6 +5,205 @@
 
 import Foundation
 
+//MARK: - Doubly-Linked List -
+
+public class DoublyLinkedList<T> {
+    
+    private var rootNode: DoublyLinkedListNode<T>
+    private var tailNode: DoublyLinkedListNode<T>
+    
+    public init(firstValue: T) {
+        let firstNode = DoublyLinkedListNode(value: firstValue)
+        self.rootNode = firstNode
+        self.tailNode = firstNode
+    }
+    
+    public static func fromArray(_ array: [T]) -> DoublyLinkedList? {
+        var list: DoublyLinkedList?
+        array.forEach { (item) in
+            if let list = list {
+                list.append(item)
+            }
+            else {
+                list = DoublyLinkedList(firstValue: item)
+            }
+        }
+        return list
+    }
+    
+}
+
+//MARK: - Data methods
+
+public extension DoublyLinkedList {
+    
+    func count() -> Int {
+        return rootNode.countFromHere()
+    }
+    
+    var rootValue: T {
+        return rootNode.value
+    }
+    
+    var tailValue: T {
+        return tailNode.value
+    }
+    
+    /**
+    Finds the first value in the list which matches criteria passed in via the `where` block.
+    - Parameter where: The block into which each value in the list will be passed until the block returns `true` or the list ends.
+    - returns: The first node for which the `where` block returns true. If none do, returns `nil`
+    */
+    func firstValue(where whereBlock: (T)->Bool) -> T? {
+        var current: DoublyLinkedListNode? = rootNode
+        while let currentNode = current {
+            if whereBlock(currentNode.value) {
+                return currentNode.value
+            }
+            current = currentNode.next
+        }
+        return nil
+    }
+    
+}
+
+//MARK: - Mutation methods
+
+public extension DoublyLinkedList {
+    
+    func append(_ value: T) {
+        if let newNode = try? tailNode.appendToTail(value) {
+            tailNode = newNode
+        }
+        else {
+            let newNode = DoublyLinkedListNode(value: value, previousNode: tailNode)
+            tailNode = newNode
+        }
+    }
+    
+    func prepend(_ value: T) {
+        if let newNode = try? rootNode.prependToHead(value) {
+            rootNode = newNode
+        }
+        else {
+            let newNode = DoublyLinkedListNode(value: value, nextNode: rootNode)
+            rootNode = newNode
+        }
+    }
+    
+}
+
+//MARK: - Iteration methods
+
+public extension DoublyLinkedList {
+    
+    func forEachFromRootToTail(doBlock: @escaping (T)->()) {
+        rootNode.iterateFromHereUntil(terminus: .tail, block: doBlock)
+    }
+    
+    func forEachFromTailToRoot(doBlock: @escaping (T)->()) {
+        tailNode.iterateFromHereUntil(terminus: .head, block: doBlock)
+    }
+    
+    func rootToTailArray() -> [T] {
+        var array = [T]()
+        forEachFromRootToTail(doBlock: { array.append($0) })
+        return array
+    }
+    
+    func tailToRootArray() -> [T] {
+        var array = [T]()
+        forEachFromTailToRoot(doBlock: { array.append($0) })
+        return array
+    }
+    
+    //MARK: Map
+    
+    func mapRootToTail<MappedType>(mapBlock: @escaping (T)->(MappedType)) -> [MappedType] {
+        var mappedArray = [MappedType]()
+        forEachFromRootToTail { (value) in
+            let mapValue = mapBlock(value)
+            mappedArray.append(mapValue)
+        }
+        return mappedArray
+    }
+    
+    func mapTailToRoot<MappedType>(mapBlock: @escaping (T)->(MappedType)) -> [MappedType] {
+        var mappedArray = [MappedType]()
+        forEachFromTailToRoot { (value) in
+            let mapValue = mapBlock(value)
+            mappedArray.append(mapValue)
+        }
+        return mappedArray
+    }
+    
+    //MARK: Filter
+    
+    func filterRootToTail(shouldInclude: @escaping (T)->Bool) -> [T] {
+        var outputArray = [T]()
+        forEachFromRootToTail { (value) in
+            if shouldInclude(value) {
+                outputArray.append(value)
+            }
+        }
+        return outputArray
+    }
+    
+    func filterTailToRoot(shouldInclude: @escaping (T)->Bool) -> [T] {
+        var outputArray = [T]()
+        forEachFromTailToRoot { (value) in
+            if shouldInclude(value) {
+                outputArray.append(value)
+            }
+        }
+        return outputArray
+    }
+    
+}
+
+//MARK: - Debug
+
+extension DoublyLinkedList: CustomStringConvertible {
+    
+    public var description: String {
+        var output = "DLinkedList{"
+        var currentNode: DoublyLinkedListNode? = rootNode
+        while let node = currentNode {
+            output += "(\(node.value))"
+            if node.next != nil {
+                output += "<->"
+            }
+            currentNode = node.next
+        }
+        output += "}"
+        return output
+    }
+    
+}
+
+//MARK: - GENERICALLY CONDITIONAL METHODS
+
+public extension DoublyLinkedList where T:Equatable {
+    
+    func contains(_ value: T) -> Bool {
+        return firstValue(where: { $0 == value }) != nil
+    }
+    
+}
+
+public extension DoublyLinkedList where T:AnyObject {
+    
+    func containsObject(_ value: T) -> Bool {
+        let firstVal = firstValue { (element) in
+            memoryAddressStringFor(element) == memoryAddressStringFor(value)
+        }
+        return firstVal != nil
+    }
+    
+}
+
+//MARK: - Doubly-Linked List Node -
+
 public class DoublyLinkedListNode<T>: Equatable {
     let value: T
     var previous: DoublyLinkedListNode<T>?
@@ -170,6 +369,7 @@ internal extension DoublyLinkedListNode {
         if terminus == .tail, isTailNode {
             return .terminus(self)
         }
+        
         var memAddressSet = Set<String>()
         let selfAddress = memoryAddressStringFor(self)
         memAddressSet.insert(selfAddress)
@@ -190,114 +390,6 @@ internal extension DoublyLinkedListNode {
         }
         
         return .terminus(current)
-    }
-    
-}
-
-public class DoublyLinkedList<T> {
-    
-    private var rootNode: DoublyLinkedListNode<T>
-    private var tailNode: DoublyLinkedListNode<T>
-    
-    public init(firstValue: T) {
-        let firstNode = DoublyLinkedListNode(value: firstValue)
-        self.rootNode = firstNode
-        self.tailNode = firstNode
-    }
-    
-}
-
-public extension DoublyLinkedList {
-    
-    func count() -> Int {
-        return rootNode.countFromHere()
-    }
-    
-    var rootValue: T {
-        return rootNode.value
-    }
-    
-    var tailValue: T {
-        return tailNode.value
-    }
-    
-}
-
-public extension DoublyLinkedList {
-    
-    func append(_ value: T) {
-        if let newNode = try? tailNode.appendToTail(value) {
-            tailNode = newNode
-        }
-        else {
-            let newNode = DoublyLinkedListNode(value: value, previousNode: tailNode)
-            tailNode = newNode
-        }
-    }
-    
-    func prepend(_ value: T) {
-        if let newNode = try? rootNode.prependToHead(value) {
-            rootNode = newNode
-        }
-        else {
-            let newNode = DoublyLinkedListNode(value: value, nextNode: rootNode)
-            rootNode = newNode
-        }
-    }
-    
-    static func fromArray(_ array: [T]) -> DoublyLinkedList? {
-        var list: DoublyLinkedList?
-        array.forEach { (item) in
-            if let list = list {
-                list.append(item)
-            }
-            else {
-                list = DoublyLinkedList(firstValue: item)
-            }
-        }
-        return list
-    }
-    
-}
-
-public extension DoublyLinkedList {
-    
-    func forEachFromRootToTail(doBlock: @escaping (T)->()) {
-        rootNode.iterateFromHereUntil(terminus: .tail, block: doBlock)
-    }
-    
-    func forEachFromTailToRoot(doBlock: @escaping (T)->()) {
-        tailNode.iterateFromHereUntil(terminus: .head, block: doBlock)
-    }
-    
-    func rootToTailArray() -> [T] {
-        var array = [T]()
-        forEachFromRootToTail(doBlock: { array.append($0) })
-        return array
-    }
-    
-    func tailToRootArray() -> [T] {
-        var array = [T]()
-        forEachFromTailToRoot(doBlock: { array.append($0) })
-        return array
-    }
-    
-}
-
-extension DoublyLinkedList: CustomStringConvertible {
-    
-    public var description: String {
-        var output = "LinkedList{"
-        var currentNode: DoublyLinkedListNode? = rootNode
-        while let node = currentNode {
-            output += "(\(node.value))"
-            if node.next != nil {
-                output += "<->"
-            }
-            currentNode = node.next
-        }
-        output += "}"
-        return output
     }
     
 }

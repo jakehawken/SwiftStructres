@@ -16,7 +16,7 @@ class SinglyLinkedListTests: XCTestCase {
         XCTAssert(subject.count == 1)
         XCTAssert(subject.rootValue == 3)
         XCTAssert(subject.tailValue == 3)
-        XCTAssert(subject.description == "LinkedList{(3)}")
+        XCTAssert(subject.description == "SLinkedList{(3)}")
         var array = [Int]()
         subject.forEach { (item) in
             array.append(item)
@@ -37,7 +37,7 @@ class SinglyLinkedListTests: XCTestCase {
             generatedArray.append(item)
         }
         XCTAssert(generatedArray == originalArray)
-        XCTAssert(subject?.description == "LinkedList{(1)->(2)->(3)->(4)->(5)->(6)->(7)->(8)}")
+        XCTAssert(subject?.description == "SLinkedList{(1)->(2)->(3)->(4)->(5)->(6)->(7)->(8)}")
     }
     
     func testGenerateArray() {
@@ -88,6 +88,30 @@ class SinglyLinkedListTests: XCTestCase {
         XCTAssertNotNil(beefVal)
         let rando = subject.firstValue { $0 == "OCTOPUS" }
         XCTAssertNil(rando)
+    }
+    
+    func testContains() {
+        let numArray = [5,7,29,-48,256]
+        let intSubject = SinglyLinkedList.fromArray(numArray)!
+        XCTAssertTrue(intSubject.contains(5))
+        XCTAssertTrue(intSubject.contains(7))
+        XCTAssertTrue(intSubject.contains(29))
+        XCTAssertTrue(intSubject.contains(-48))
+        XCTAssertTrue(intSubject.contains(256))
+        XCTAssertFalse(intSubject.contains(3))
+        XCTAssertFalse(intSubject.contains(1000))
+        XCTAssertFalse(intSubject.contains(0))
+        XCTAssertFalse(intSubject.contains(-349))
+        
+        let obj1 = NSObject()
+        let obj2 = NSObject()
+        let obj3 = NSObject()
+        let objSubject = SinglyLinkedList.fromArray([obj1, obj2, obj3])!
+        XCTAssertTrue(objSubject.containsObject(obj3))
+        XCTAssertTrue(objSubject.containsObject(obj2))
+        XCTAssertTrue(objSubject.containsObject(obj1))
+        let newObj = NSObject()
+        XCTAssertFalse(objSubject.containsObject(newObj))
     }
 
 }
