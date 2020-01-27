@@ -5,12 +5,13 @@ The Swift standard library comes with a handful of data structures, including ar
 ## The Current List
 
 - Singly-linked list (have)
-- Doubly-linked list (need)
+- Doubly-linked list (have)
 - Queue (have)
 - Stack (need)
 - Heap (need)
 - Graph (need)
 - Binary search tree (need)
+- Something you feel should be included?
 
 ## Submissions
 
@@ -18,6 +19,7 @@ For submissions of new implementations, please include in your PR:
 
 - Unit tests for your data structure using regular, vanilla XCTest
 - Documentation comments, so users can get option+click functionality (For help, read this: <https://nshipster.com/swift-documentation>)
+- Debug functionality for your data structure (i.e. at least conform to `CustomStringConvertible` to support `print(_:)` and string interpolation functionality.)
 - 1 data structure per PR, please
 
 ## License

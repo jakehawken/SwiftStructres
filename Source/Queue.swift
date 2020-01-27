@@ -24,7 +24,7 @@ public class Queue<T> {
             self.list = SinglyLinkedList(firstValue: element)
             return
         }
-        list.insert(value: element)
+        list.append(element)
     }
     
     /**
@@ -37,7 +37,7 @@ public class Queue<T> {
         }
         list = list?.newListByIncrementingRoot()
         count -= 1
-        return currentList.rootNode.value
+        return currentList.rootValue
     }
     
     /**
@@ -45,7 +45,7 @@ public class Queue<T> {
     - returns: The element at the front of the queue.
     */
     var peek: T? {
-        return list?.rootNode.value
+        return list?.rootValue
     }
     
     /**

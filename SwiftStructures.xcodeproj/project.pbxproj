@@ -18,6 +18,8 @@
 		0928BB4C23DC03400098FB9B /* InternalUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0928BB4B23DC03400098FB9B /* InternalUtilities.swift */; };
 		0928BB4E23DC0E1A0098FB9B /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0928BB4D23DC0E1A0098FB9B /* Queue.swift */; };
 		0928BB5023DC130D0098FB9B /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0928BB4F23DC130D0098FB9B /* QueueTests.swift */; };
+		0928BB5423DCC56B0098FB9B /* DoublyLinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0928BB5323DCC56B0098FB9B /* DoublyLinkedList.swift */; };
+		0928BB5623DCC84D0098FB9B /* DoublyLinkedListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0928BB5523DCC84D0098FB9B /* DoublyLinkedListTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,8 @@
 		0928BB4B23DC03400098FB9B /* InternalUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalUtilities.swift; sourceTree = "<group>"; };
 		0928BB4D23DC0E1A0098FB9B /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		0928BB4F23DC130D0098FB9B /* QueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
+		0928BB5323DCC56B0098FB9B /* DoublyLinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublyLinkedList.swift; sourceTree = "<group>"; };
+		0928BB5523DCC84D0098FB9B /* DoublyLinkedListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublyLinkedListTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,8 +106,9 @@
 		0928BB3223D7EEB40098FB9B /* SwiftStructuresTests */ = {
 			isa = PBXGroup;
 			children = (
-				0928BB4123D8ACE10098FB9B /* SinglyLinkedListTests.swift */,
+				0928BB5523DCC84D0098FB9B /* DoublyLinkedListTests.swift */,
 				0928BB4F23DC130D0098FB9B /* QueueTests.swift */,
+				0928BB4123D8ACE10098FB9B /* SinglyLinkedListTests.swift */,
 				0928BB3523D7EEB40098FB9B /* Info.plist */,
 			);
 			path = SwiftStructuresTests;
@@ -112,9 +117,10 @@
 		0928BB3E23D7EEDB0098FB9B /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				0928BB3F23D7EF070098FB9B /* SinglyLinkedList.swift */,
-				0928BB4D23DC0E1A0098FB9B /* Queue.swift */,
 				0928BB4B23DC03400098FB9B /* InternalUtilities.swift */,
+				0928BB5323DCC56B0098FB9B /* DoublyLinkedList.swift */,
+				0928BB4D23DC0E1A0098FB9B /* Queue.swift */,
+				0928BB3F23D7EF070098FB9B /* SinglyLinkedList.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -222,6 +228,7 @@
 			files = (
 				0928BB2123D7EEB20098FB9B /* ViewController.swift in Sources */,
 				0928BB1D23D7EEB20098FB9B /* AppDelegate.swift in Sources */,
+				0928BB5423DCC56B0098FB9B /* DoublyLinkedList.swift in Sources */,
 				0928BB4023D7EF070098FB9B /* SinglyLinkedList.swift in Sources */,
 				0928BB4C23DC03400098FB9B /* InternalUtilities.swift in Sources */,
 				0928BB4E23DC0E1A0098FB9B /* Queue.swift in Sources */,
@@ -233,6 +240,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0928BB5623DCC84D0098FB9B /* DoublyLinkedListTests.swift in Sources */,
 				0928BB4223D8ACE10098FB9B /* SinglyLinkedListTests.swift in Sources */,
 				0928BB5023DC130D0098FB9B /* QueueTests.swift in Sources */,
 			);
