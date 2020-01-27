@@ -12,12 +12,21 @@ public class DoublyLinkedList<T> {
     private var rootNode: DoublyLinkedListNode<T>
     private var tailNode: DoublyLinkedListNode<T>
     
+    /**
+    The basic initializer for creating a new doubly-linked list. The value passed in will be the value of the root node, and will determine the generic type of the list, i.e. calling `DoublyLinkedList(firstValue: 3)` will generate a `DoublyLinkedList<Int>`.
+    - Parameter firstValue: The initial `rootValue`. At initialization, there will only be one element, so the `rootValue` and `tailValue` properties will return the same element.
+    */
     public init(firstValue: T) {
         let firstNode = DoublyLinkedListNode(value: firstValue)
         self.rootNode = firstNode
         self.tailNode = firstNode
     }
     
+    /**
+    Generates a doubly-linked list of the respective elements of an array, honoring the data order, e.g. passing in [0,1,2] will generate DLinkedList{(0)->(1)->(2)}
+    - Parameter array: The array which will be used to generate the list.
+    - returns: An optional doubly-linked list. If the array is empty, this will be nil. Otherwise, it will be non-nil.
+    */
     public static func fromArray(_ array: [T]) -> DoublyLinkedList? {
         var list: DoublyLinkedList?
         array.forEach { (item) in
@@ -36,15 +45,25 @@ public class DoublyLinkedList<T> {
 //MARK: - Data methods
 
 public extension DoublyLinkedList {
-    
+    /**
+    Returns the current number of nodes in the list. This is done iteratively and is thus an O(n) operation.
+     
+    This method executes in O(n) time.
+    */
     func count() -> Int {
         return rootNode.countFromHere()
     }
     
+    /**
+    Returns the element at the root position.
+    */
     var rootValue: T {
         return rootNode.value
     }
     
+    /**
+    Returns the element at the tail position.
+    */
     var tailValue: T {
         return tailNode.value
     }
@@ -53,6 +72,8 @@ public extension DoublyLinkedList {
     Finds the first value in the list which matches criteria passed in via the `where` block.
     - Parameter where: The block into which each value in the list will be passed until the block returns `true` or the list ends.
     - returns: The first node for which the `where` block returns true. If none do, returns `nil`
+     
+    This method executes in (up to) O(n) time.
     */
     func firstValue(where whereBlock: (T)->Bool) -> T? {
         var current: DoublyLinkedListNode? = rootNode
@@ -70,7 +91,12 @@ public extension DoublyLinkedList {
 //MARK: - Mutation methods
 
 public extension DoublyLinkedList {
+    /**
+    Appends a value onto the end of the list. Since references are maintained to the root and tail of the list, insertion happens in constant time.
+    - Parameter value: The value that will become the new `tailValue` of the list.
     
+    This method executes in constant time.
+    */
     func append(_ value: T) {
         if let newNode = try? tailNode.appendToTail(value) {
             tailNode = newNode
@@ -81,6 +107,12 @@ public extension DoublyLinkedList {
         }
     }
     
+    /**
+    Prepends a value onto the beginning of the list. Since references are maintained to the root and tail of the list, insertion happens in constant time.
+    - Parameter value: The value that will become the new `rootValue` of the list.
+    
+    This method executes in constant time.
+    */
     func prepend(_ value: T) {
         if let newNode = try? rootNode.prependToHead(value) {
             rootNode = newNode
@@ -97,61 +129,110 @@ public extension DoublyLinkedList {
 
 public extension DoublyLinkedList {
     
-    func forEachFromRootToTail(doBlock: @escaping (T)->()) {
-        rootNode.iterateFromHereUntil(terminus: .tail, block: doBlock)
+    enum IterationDirection {
+        case rootToTail
+        case tailToRoot
     }
     
-    func forEachFromTailToRoot(doBlock: @escaping (T)->()) {
-        tailNode.iterateFromHereUntil(terminus: .head, block: doBlock)
+    /**
+    Iterates through the list in the specified direction, and executes the given block for each element in the list.
+    - Parameter from: Declares the iterating direction.
+    - Parameter doBlock: A block with no return value into which the value of each node in the list will be passed.
+     
+     This method executes in O(n) time.
+    */
+    func forEach(from direction: IterationDirection, doBlock: @escaping (T)->()) {
+        switch direction {
+        case .rootToTail:
+            rootNode.iterateFromHereUntil(terminus: .tail, block: doBlock)
+        case .tailToRoot:
+            tailNode.iterateFromHereUntil(terminus: .head, block: doBlock)
+        }
     }
     
-    func rootToTailArray() -> [T] {
+    /**
+    Generates an array from the contents of the list in the specified order.
+    - Parameter from: Declares the iterating direction.
+    - returns: An array corresponding to the elements of the list, in the specified order. Guaranteed to have at least one element.
+    
+    This method executes in O(n) time.
+    */
+    func asArray(from direction: IterationDirection) -> [T] {
         var array = [T]()
-        forEachFromRootToTail(doBlock: { array.append($0) })
-        return array
-    }
-    
-    func tailToRootArray() -> [T] {
-        var array = [T]()
-        forEachFromTailToRoot(doBlock: { array.append($0) })
+        forEach(from: direction, doBlock: { array.append($0) })
         return array
     }
     
     //MARK: Map
     
-    func mapRootToTail<MappedType>(mapBlock: @escaping (T)->(MappedType)) -> [MappedType] {
+    /**
+    Generates an array from the contents of the list, in the specified order, based on the output of the mapping block.
+    - Parameter from: Declares the iterating direction.
+    - Parameter mapBlock: A block which generates a new value (of `MappedType`) into which each element of the list is passed.
+    - returns: An array corresponding to the elements of the list. Guaranteed to have at least one element.
+    # Example #
+    ```
+     let myList = DoublyLinkedList.fromArray([1,3,5])
+     let mappedList = myList?.map(from: .rootToTail) { {element) in
+        "\(element)"
+     }
+     // mappedList will equal ["1", "3", "5"]
+    ```
+     
+     This method executes in O(n) time.
+    */
+    func map<MappedType>(from direction: IterationDirection, mapBlock: @escaping (T)->(MappedType)) -> [MappedType] {
         var mappedArray = [MappedType]()
-        forEachFromRootToTail { (value) in
+        forEach(from: direction) { (value) in
             let mapValue = mapBlock(value)
             mappedArray.append(mapValue)
         }
         return mappedArray
     }
     
-    func mapTailToRoot<MappedType>(mapBlock: @escaping (T)->(MappedType)) -> [MappedType] {
+    /**
+    Generates an array from the contents of the list, in the specified order, based on the output of the mapping block.
+    - Parameter from: Declares the iterating direction.
+    - Parameter mapBlock: A block which generates an optional value (of `MappedType`) into which each element of the list is passed. When the block returns nil, nothing is added to the output array for that element.
+    - returns: An array corresponding to the elements of the list. Not guaranteed to have any elements.
+    # Example #
+    ```
+     let myList = DoublyLinkedList.fromArray([1,3,nil,5])
+     let mappedList = myList?.compactMap(from: .rootToTail, mapBlock: { $0 })
+     // mappedList will equal [1, 3, 5]
+    ```
+     
+     This method executes in O(n) time.
+    */
+    func compactMap<MappedType>(from direction: IterationDirection, mapBlock: @escaping (T)->(MappedType?)) -> [MappedType] {
         var mappedArray = [MappedType]()
-        forEachFromTailToRoot { (value) in
-            let mapValue = mapBlock(value)
-            mappedArray.append(mapValue)
+        forEach(from: direction) { (value) in
+            if let mapValue = mapBlock(value) {
+                mappedArray.append(mapValue)
+            }
         }
         return mappedArray
     }
     
     //MARK: Filter
     
-    func filterRootToTail(shouldInclude: @escaping (T)->Bool) -> [T] {
+    /**
+    Generates an array of elements from the list, in the specified order, which meet the criteria determined by the `shouldInclude` block.
+    - Parameter from: Declares the iterating direction.
+    - Parameter shouldInclude: A block into which each element of the list is passed. If the block returns `true`, that element will be included in the output array.
+    - returns: An array of elements from the list which meeet the criteria of the `shouldInclude` block, in the specified order.
+    # Example #
+    ```
+     let myList = DoublyLinkedList.fromArray([1, 3, 5])
+     let filtered = myList?.filter(from: .tailToRoot) { $0 < 4 }
+     // filtered will equal [3, 1]
+    ```
+     
+     This method executes in O(n) time.
+    */
+    func filter(from direction: IterationDirection, shouldInclude: @escaping (T)->Bool) -> [T] {
         var outputArray = [T]()
-        forEachFromRootToTail { (value) in
-            if shouldInclude(value) {
-                outputArray.append(value)
-            }
-        }
-        return outputArray
-    }
-    
-    func filterTailToRoot(shouldInclude: @escaping (T)->Bool) -> [T] {
-        var outputArray = [T]()
-        forEachFromTailToRoot { (value) in
+        forEach(from: direction) { (value) in
             if shouldInclude(value) {
                 outputArray.append(value)
             }
@@ -184,7 +265,13 @@ extension DoublyLinkedList: CustomStringConvertible {
 //MARK: - GENERICALLY CONDITIONAL METHODS
 
 public extension DoublyLinkedList where T:Equatable {
+    /**
+    Determines if the list contains an element.
+    - Parameter value: The value being checked for. If the list contains element that is equal to this value, the method will return `true`.
+    - returns: `True` if the list contains the value. `False` if it does not.
     
+    This method executes in (up to) O(n) time.
+    */
     func contains(_ value: T) -> Bool {
         return firstValue(where: { $0 == value }) != nil
     }
@@ -192,10 +279,16 @@ public extension DoublyLinkedList where T:Equatable {
 }
 
 public extension DoublyLinkedList where T:AnyObject {
+    /**
+    Determines if the list contains an element.
+    - Parameter object: The object being checked for. If the list contains this exact object, the method will return `true`.
+    - returns: `True` if the list contains the given object. `False` if it does not.
     
-    func containsObject(_ value: T) -> Bool {
+    This method executes in (up to) O(n) time.
+    */
+    func containsObject(_ object: T) -> Bool {
         let firstVal = firstValue { (element) in
-            memoryAddressStringFor(element) == memoryAddressStringFor(value)
+            memoryAddressStringFor(element) == memoryAddressStringFor(object)
         }
         return firstVal != nil
     }

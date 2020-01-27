@@ -83,7 +83,7 @@ public class SinglyLinkedList<T> {
     
     /**
     The basic initializer for creating a new linked list. The value passed in will be the value of the root node, and will determine the generic type of the list, i.e. calling `SinglyLinkedList(firstValue: 3)` will generate a `SinglyLinkedList<Int>`.
-    - Parameter firstValue: The value that will become set to the `value` property of the root node. At initialization, there will only be one node, so the `rootNode` and `tailNode` properties will return the same object.
+    - Parameter firstValue: The initial `rootValue`. At initialization, there will only be one element, so the `rootValue` and `tailValue` properties will return the same element.
     */
     public init(firstValue: T) {
         let first = SinglyLinkedListNode(value: firstValue)
@@ -98,6 +98,24 @@ public class SinglyLinkedList<T> {
     fileprivate init(rootNode: SinglyLinkedListNode<T>) {
         self.rootNode = rootNode
         self.tailNode = rootNode.findTerminalNode()
+    }
+    
+    /**
+    Generates a linked list of the respective elements of an array, honoring the data order, e.g. passing in [0,1,2] will generate SLinkedList{ (0)->(1)->(2) }
+    - Parameter array: The array which will be used to generate the list.
+    - returns: An optional singly linked list. If the array is empty, this will be nil. Otherwise, it will be non-nil.
+    */
+    public static func fromArray(_ array: [T]) -> SinglyLinkedList? {
+        var list: SinglyLinkedList?
+        array.forEach { (item) in
+            if let list = list {
+                list.append(item)
+            }
+            else {
+                list = SinglyLinkedList(firstValue: item)
+            }
+        }
+        return list
     }
     
     /**
@@ -129,14 +147,14 @@ public extension SinglyLinkedList {
     }
     
     /**
-    Returns the value of the first node in the list.
+    Returns the element at the root position.
     */
     var rootValue: T {
         return rootNode.value
     }
     
     /**
-    Returns the value of the last node in the list.
+    Returns the element at the tail position.
     */
     var tailValue: T {
         return tailNode.value
@@ -162,7 +180,7 @@ public extension SinglyLinkedList {
 public extension SinglyLinkedList {
     /**
     Appends a value onto the end of the list. Since references are maintained to the root and tail of the list, insertion happens in constant time.
-    - Parameter value: The value that will go into the new tailNode of the list.
+    - Parameter value: The value that will become the new `tailValue` of the list.
     */
     func append(_ value: T) {
         let newNode = SinglyLinkedListNode(value: value)
@@ -180,39 +198,21 @@ public extension SinglyLinkedList {
  
 public extension SinglyLinkedList {
     /**
-     Iterates through each node of the list and executes the given block for each data element (T) in the list.
+     Iterates through the list and executes the given block for each element in the list.
      - Parameter doBlock: A block with no return value into which the value of each node in the list will be passed.
-     */
+    */
     func forEach(doBlock: (T)->()) {
         rootNode.forEachFromHere(doBlock: doBlock)
     }
     
     /**
     Generates an array from the contents of the list, honoring the data order. e.g. SLinkedList{ (0)->(1)->(2) } will generate [0,1,2]
-    - returns: An array corresponding to the values of the list's nodes. Guaranteed to have at leats one element.
+    - returns: An array corresponding to the elements of the list. Guaranteed to have at least one element.
     */
     func asArray() -> [T] {
         var output = [T]()
         forEach { output.append($0) }
         return output
-    }
-    
-    /**
-    Generates a linked list of the respective elements of an array, honoring the data order, e.g. passing in [0,1,2] will generate SLinkedList{ (0)->(1)->(2) }
-    - Parameter array: The array which will be used to generate the list.
-    - returns: An optional singly linked list. If the array is empty, this will be nil. Otherwise, it will be non-nil.
-    */
-    static func fromArray(_ array: [T]) -> SinglyLinkedList? {
-        var list: SinglyLinkedList?
-        array.forEach { (item) in
-            if let list = list {
-                list.append(item)
-            }
-            else {
-                list = SinglyLinkedList(firstValue: item)
-            }
-        }
-        return list
     }
 }
 
